@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, ButtonToolbar, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import '../../css/styles.css';
 
 
 //import Movie from '../Movies/Movies'
@@ -19,7 +20,7 @@ render() {
                 {this.props.ads.map(ad => (
                     
                 <Card style={{flex: 1, width: 350}}>
-                    <Link to={`/advert/${ad._id}`} className="card-header-title"> <Card.Img variant="top" fluid='true' src={`http://localhost:3001/${ad.photo}`  } /> </Link>
+                    <Link to={`/advert/${ad._id}`} className="card-header-title"> <Card.Img variant="top" fluid='true' src={`http://localhost:3001/${ad.photo}`     } /> </Link>
                     
                     <Card.Body>
                         <Link to={`/advert/${ad._id}`} className="card-header-title"><Card.Title>{ad.name}</Card.Title> </Link>
