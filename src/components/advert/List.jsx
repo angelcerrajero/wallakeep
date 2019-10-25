@@ -27,7 +27,7 @@ export default class Adverts extends React.Component {
   
 
   componentWillMount(){
-    console.log('compruebo user antes de montar componente registro');
+
     const user = localStorage.getItem('userData');
     if(user == null){
       this.props.history.push("/register");
