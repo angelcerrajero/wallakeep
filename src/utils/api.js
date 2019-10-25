@@ -22,19 +22,22 @@ export const api = () => {
 
     },
 
-    getAdsbySearch: (name, price, tagSelected, type) => {
-        console.log(name, price, tagSelected, type);
+    getAdsbySearch: (name, price, tagSelected, venta) => {
+        console.log(name, price, tagSelected, venta);
         let endPoint = `${API_URL}`
         
         if(tagSelected){
-          endPoint = `${API_URL}tag=${tagSelected}`
+          endPoint = `${API_URL}tag=${tagSelected}`
           console.log(endPoint)
         }if(price){
           endPoint = `${endPoint}&price=0-${price}`
           console.log(endPoint)
            
         }if(name){
-          endPoint = `${API_URL}&name${name}`
+          endPoint = `${endPoint}&name=${name}`
+          console.log(endPoint)
+        }if(venta){
+          endPoint = `${endPoint}&venta=${venta}`
           console.log(endPoint)
         }
         // console.log(endPoint)

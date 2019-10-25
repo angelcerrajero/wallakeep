@@ -68,11 +68,8 @@ myAds = () => {
   };
   mySearch = () => {
     console.log(this.state);
-    const {name, price, tagSelected, type} = this.state;
-    
-    
-    
-    getAdsbySearch(name, price, tagSelected, type).then(ad =>
+    const {name, price, tagSelected, venta} = this.state;
+    getAdsbySearch(name, price, tagSelected, venta).then(ad =>
       this.setState({
         ads: ad
       })
@@ -102,6 +99,7 @@ myAds = () => {
 
   onInputChange = (event) => {
     const {name, value} = event.target;
+    console.log(name, value)
     this.setState({
         [name]: value
       }
@@ -201,10 +199,10 @@ myAds = () => {
       <Form.Row>
       <Form.Group as={Col} md="6" controlId="validationCustom02">
           <Form.Label>Seller or Buyer</Form.Label>
-          <Form.Control as="select" name="type" size="" autoFocus={true}  onChange={this.onInputChange}>
-                    <option className="field" value="" name="tags" selected disabled>Choose an option</option>
-                    <option className="field"  name="sell" >Sell</option>
-                    <option className="field"  name="buy" >Buy</option>
+          <Form.Control as="select" name="venta" size="" autoFocus={true}  onChange={this.onInputChange}>
+                    <option className="field" value="" name="" selected disabled>Choose an option</option>
+                    <option className="field"  value="true" >sell</option>
+                    <option className="field"  value="false" >buy</option>
 
           </Form.Control>
         </Form.Group>
