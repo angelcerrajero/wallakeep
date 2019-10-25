@@ -1,24 +1,30 @@
 import React from "react";
 import api from "../../utils/api";
 import AdsList from "./AdsList"
+import { Navbar, Button, Form, FormControl, Nav, NavDropdown, Col, InputGroup  } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import '../../css/styles.css';
-import '../../css/bulma.css';
-import { Navbar, Button, Form, FormControl, Nav  } from 'react-bootstrap';
+import { number } from "prop-types";
+// import '../../css/bulma.css';
 
-
-const { getAds, findAds } = api();
-
-
+const { getAds, findAds, getTags, getTagsAds, getAdsbySearch } = api();
 
 export default class Adverts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies: []
-    };
+      ads:[],
+      tags:[],
+      tagSelected:"",
+      price:"",
+      type:"",
+      loading: true,
 
+    };
     this.myAds();
+  
   }
+  
 
   componentWillMount(){
     console.log('compruebo user antes de montar componente registro');
@@ -26,17 +32,53 @@ export default class Adverts extends React.Component {
     if(user == null){
       this.props.history.push("/register");
     }
-
+    this.myTags();
   }
 
+  myTags = () => {
+    getTags().then (tag => 
+        this.setState({
+            tags: tag,
+            loading: false
+          })
+        );
+}
 
-myAds = () => {
-    getAds().then(ad =>
+resetAds = () => {
+  this.props.history.push('/advert')
+  getAds().then (ad =>
       this.setState({
         ads: ad
       })
     );
+}
+
+
+myAds = () => {
+
+      const user = JSON.parse(localStorage.getItem('userData'));  
+      console.log(user.tags)
+        
+        getTagsAds(user.tags).then(ad =>
+          this.setState({
+            ads: ad
+          })
+        );
+  
   };
+  mySearch = () => {
+    console.log(this.state);
+    const {name, price, tagSelected, type} = this.state;
+    
+    
+    
+    getAdsbySearch(name, price, tagSelected, type).then(ad =>
+      this.setState({
+        ads: ad
+      })
+    );
+  }
+  
 
 
   search = (event) => {
@@ -48,16 +90,41 @@ myAds = () => {
     }
     this.myAds();
     
-  
+  }
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    
+    this.mySearch();
+
     
   }
 
+  onInputChange = (event) => {
+    const {name, value} = event.target;
+    this.setState({
+        [name]: value
+      }
+    );
+  };
+
+
   render() {
+
     const { ads } = this.state;
+    const { tags, loading } = this.state;
+        
+        
+
+    if(loading){
+        
+        return null
+    }
+
     return (
       <React.Fragment >
-        <Navbar collapseOnSelect bg="dark" variant="dark">
-        <Navbar.Brand href="#home">
+        {/* <Navbar collapseOnSelect bg="dark" className="navbar-isdark" variant="dark">
+        <Link to="/advert"><Navbar.Brand>
             <img
               src="https://es.seaicons.com/wp-content/uploads/2015/09/Online-Shopping-icon.png"
               width="30"
@@ -67,17 +134,103 @@ myAds = () => {
             />{' '}
             WallaKeep
         </Navbar.Brand>
-            <Nav className="mr-auto">
-                {/* <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#features">Features</Nav.Link>
-                <Nav.Link href="#pricing">Pricing</Nav.Link> */}
-              </Nav>
+        </Link>
           <Form inline>
             <FormControl type="text" placeholder="Search" onKeyUp={this.search} className="mr-sm-2" />
             <Button variant="outline-info">Search</Button>
           </Form>
-        </Navbar>
-  
+        </Navbar> */}
+
+<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+<Link to="/advert"><Navbar.Brand>
+            <img
+              src="https://es.seaicons.com/wp-content/uploads/2015/09/Online-Shopping-icon.png"
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+              alt="WallaKeep"
+            />{' '}
+            WallaKeep
+        </Navbar.Brand>
+        </Link>
+  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+  <Navbar.Collapse id="responsive-navbar-nav">
+    <Nav className="mr-auto">
+      
+    </Nav>
+    <Nav>
+    <Form inline>
+            <FormControl type="text" placeholder="Search" onKeyUp={this.search} className="mr-sm-2" />
+            <Button variant="outline-info">Search</Button>
+          </Form>
+    </Nav>
+  </Navbar.Collapse>
+</Navbar>
+<br/>
+
+
+<Form  className="advancedSearch" onSubmit = {this.onSubmit} >
+      <Form.Row>
+        <Form.Group as={Col}  controlId="validationCustom01">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            onChange={this.onInputChange}
+            type="text"
+            placeholder="Name"
+            name="name"
+            defaultValue=""
+            
+          />
+        </Form.Group>
+        <Form.Group as={Col} md="6" controlId="validationCustom02">
+          <Form.Label>Tags</Form.Label>
+          <Form.Control as="select" name="tagSelected" required autoFocus={true}  onChange={this.onInputChange}>
+                    <option className="field" value="" selected disabled>Choose your Tag</option>
+            {
+                tags.map(element =>(
+                    
+                    <option> {element}</option> 
+                // <option value={element}>{element}</option> 
+                
+                ))
+            }
+             </Form.Control>
+        </Form.Group>
+        
+      </Form.Row>
+      <Form.Row>
+      <Form.Group as={Col} md="6" controlId="validationCustom02">
+          <Form.Label>Seller or Buyer</Form.Label>
+          <Form.Control as="select" name="type" size="" autoFocus={true}  onChange={this.onInputChange}>
+                    <option className="field" value="" name="tags" selected disabled>Choose an option</option>
+                    <option className="field"  name="sell" >Sell</option>
+                    <option className="field"  name="buy" >Buy</option>
+
+          </Form.Control>
+        </Form.Group>
+        <Form.Group as={Col}  controlId="validationCustomUsername">
+          <Form.Label>Max Price</Form.Label>
+          <InputGroup>
+            <Form.Control
+              type="number"
+              placeholder="€€€"
+              min="1"
+              name="price"
+              aria-describedby="inputGroupPrepend"
+              step="0.01"
+              
+              onChange={this.onInputChange}
+            />
+          </InputGroup>
+          
+        </Form.Group>
+        
+      </Form.Row>
+      <Button className="buttonAdvancedSearc" variant="outline-info" type="submit">Submit form</Button>
+      <br></br>
+      <Button className="buttonReset" variant="outline-secondary" type="reset" onClick={this.resetAds}>Reset</Button>
+    </Form>
+       
         
 
         {

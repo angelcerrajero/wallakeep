@@ -7058,7 +7058,7 @@
   }
   
   .navbar-item img {
-    max-height: 1.75rem;
+    /* max-height: 1.75rem; */
   }
   
   .navbar-item.has-dropdown {

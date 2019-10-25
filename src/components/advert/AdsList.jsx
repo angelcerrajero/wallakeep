@@ -10,8 +10,7 @@ export default class AdsList extends Component {
    
 
 render() {
-    
-    console.log(this.props.ads);    
+
     return (
     <React.Fragment>
             

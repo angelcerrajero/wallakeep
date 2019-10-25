@@ -1,37 +1,43 @@
 import axios from 'axios';
+const API_URL = `http://localhost:3001/apiv1/anuncios?`
 
-
-const API = "https://api.themoviedb.org/3";
-const API_KEY = "949a6317e9f27c200ecf0e11bdff7cd3";
-
-//https://api.themoviedb.org/3/search/movie?language=en-US&page=1&include_adult=false&query=jok&api_key=949a6317e9f27c200ecf0e11bdff7cd3
-
-//https://api.themoviedb.org/3/movie/475557?api_key=949a6317e9f27c200ecf0e11bdff7cd3&language=en-US
 
 export const api = () => {
+    
   return {
 
-    getMovie: () => {
-      const endPoint = `${API}/discover/movie?language=en-US&include_adult=false&include_video=false&api_key=${API_KEY}`;
-      return axios.get(endPoint)
-      .then(response => response.data.results)
-    },
+    getTagsAds: (query) => {
+        
+        const endPoint = `http://localhost:3001/apiv1/anuncios?tag=${query}`
+        console.log(endPoint)
+        return axios.get(endPoint)
+        .then(response => response.data.results)
 
-    findMovie: (query) => {
-      const endPoint = `${API}/search/movie?language=en-US&page=1&include_adult=false&query=${query}&api_key=${API_KEY}`;
-      return axios.get(endPoint)
-      .then(response => response.data.results)
     },
-
-    findMovieByID: (id) => {
-      const endPoint = `${API}/movie/${id}?api_key=${API_KEY}&language=en-US`;
-      return axios.get(endPoint)
-      .then(response => response.data)
-    },
-
-    getAds: () => {
-        console.log('getads funcionando')
+    
+    getAds: (query) => {
         const endPoint = `http://localhost:3001/apiv1/anuncios`
+        return axios.get(endPoint)
+        .then(response => response.data.results)
+
+    },
+
+    getAdsbySearch: (name, price, tagSelected, type) => {
+        console.log(name, price, tagSelected, type);
+        let endPoint = `${API_URL}`
+        
+        if(tagSelected){
+          endPoint = `${API_URL}tag=${tagSelected}`
+          console.log(endPoint)
+        }if(price){
+          endPoint = `${endPoint}&price=0-${price}`
+          console.log(endPoint)
+           
+        }if(name){
+          endPoint = `${API_URL}&name${name}`
+          console.log(endPoint)
+        }
+        // console.log(endPoint)
         return axios.get(endPoint)
         .then(response => response.data.results)
 

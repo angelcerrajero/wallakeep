@@ -115,9 +115,10 @@
   column-gap: 20px;
   row-gap: 20px;
   padding: 30px;
-  
-  
+
 }
+
+
 
 
 .tagButton {
@@ -141,4 +142,40 @@
     justify-content: space-between;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.wallakeepImg{
+    width: 50px;
+    height: 50px;
+}
+
+.container {
+    border: solid 1px lightgray;
+    padding: 50px;
+    border-radius: 1rem;
+}
+
+
+
+.button is-primary{
+    padding:4px;
+}
+
+.advancedSearch{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+.buttonAdvancedSearc{
+    
+    align-self: center;
+}
+
+.buttonReset{
+    
+    align-self: center;
 }

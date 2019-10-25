@@ -3,7 +3,8 @@ import Register from "./components/Register/Register";
 import List from "./components/advert/List"
 import DetailAd from "./components/advert/DetailAd"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/styles.css'
+
+// import './css/styles.css'
 
 //import 'bulma/css/bulma.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";

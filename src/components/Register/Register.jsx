@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Tags from "./Tags";
 import {setUser, getUser} from './../../utils/storage';
 
+
 export default class Login extends React.Component {
 
     constructor(props) {
@@ -37,6 +38,7 @@ export default class Login extends React.Component {
     event.preventDefault();
     console.log(this.state);
     console.log(this.props);
+    
 
     if (this.state.user.name.trim().length <= 3) {
       alert("The name must be bigger than 3 characters");
