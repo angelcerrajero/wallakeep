@@ -3,9 +3,10 @@ import api from "../../utils/api";
 import '../../css/bulma.css';
 import '../../css/styles.css';
 import { Link } from "react-router-dom";
+import UserContext from '../../context/user';
 
 
-import { Navbar, Button, ButtonToolbar, Form, FormControl  } from 'react-bootstrap';
+import { Nav, Navbar, Button, ButtonToolbar, Form, FormControl  } from 'react-bootstrap';
 
 
 const { findAdByID } = api();
@@ -19,8 +20,9 @@ export default class DetailAd extends React.Component {
   }
 
   componentWillMount(){
-    const user = localStorage.getItem('userData');
-    if(user == null){
+    const userFromContext = this.context.user;
+    console.log('usuario del contexto es: ', userFromContext);
+    if(Object.entries(userFromContext).length === 0){
       this.props.history.push("/register");
     }
 
@@ -47,9 +49,8 @@ export default class DetailAd extends React.Component {
     
     return(
       <React.Fragment>
-          <Navbar collapseOnSelect bg="dark" className="navbar-isdark" variant="dark">
-          <Link to={`/advert`}>
-          <Navbar.Brand href="#home">
+         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+<Link to="/advert"><Navbar.Brand>
             <img
               src="https://es.seaicons.com/wp-content/uploads/2015/09/Online-Shopping-icon.png"
               width="30"
@@ -60,12 +61,19 @@ export default class DetailAd extends React.Component {
             WallaKeep
         </Navbar.Brand>
         </Link>
-            
-          <Form inline>
+  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+  <Navbar.Collapse id="responsive-navbar-nav">
+    <Nav className="mr-auto">
+      
+    </Nav>
+    <Nav>
+    <Form inline>
             <FormControl type="text" placeholder="Search" onKeyUp={this.search} className="mr-sm-2" />
-            <Button variant="outline-info">Search</Button>
+            <Button variant="outline-info">New</Button>
           </Form>
-        </Navbar>
+    </Nav>
+  </Navbar.Collapse>
+</Navbar>
         
       {
         ad
@@ -148,7 +156,7 @@ export default class DetailAd extends React.Component {
                   <div class="level-item"><a href="#">Add to favorites</a></div>
                 </div>
                 <div class="level-right">
-                  <div class="level-item">Share</div><a class="level-item" href="#"><img src="placeholder/icons/facebook-f.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/twitter.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/instagram.svg" alt=""/></a>
+                  {/* <div class="level-item">Share</div><a class="level-item" href="#"><img src="placeholder/icons/facebook-f.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/twitter.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/instagram.svg" alt=""/></a> */}
                 </div>
               </div>
             </div>
@@ -160,8 +168,7 @@ export default class DetailAd extends React.Component {
      
      </React.Fragment>
     )}
-    
-
-
+  
   
 }
+DetailAd.contextType = UserContext;

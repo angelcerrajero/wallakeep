@@ -4,6 +4,7 @@ import AdsList from "./AdsList"
 import { Navbar, Button, Form, FormControl, Nav, NavDropdown, Col, InputGroup  } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import '../../css/styles.css';
+import UserContext from '../../context/user';
 import { number } from "prop-types";
 // import '../../css/bulma.css';
 
@@ -21,18 +22,27 @@ export default class Adverts extends React.Component {
       loading: true,
 
     };
-    this.myAds();
-  
+    
   }
   
 
   componentWillMount(){
-
+    console.log('hola que ta')
     const user = localStorage.getItem('userData');
-    if(user == null){
+    const userFromContext = this.context.user;
+    console.log('usuario del contexto: ', userFromContext.name)
+
+    // if(user == null){
+    //   this.context.updateUser(user);
+    //   this.props.history.push("/register");
+    // }
+
+    if(Object.entries(userFromContext).length === 0){
       this.props.history.push("/register");
     }
+    
     this.myTags();
+    this.myAds();
   }
 
   myTags = () => {
@@ -159,7 +169,7 @@ myAds = () => {
     <Nav>
     <Form inline>
             <FormControl type="text" placeholder="Search" onKeyUp={this.search} className="mr-sm-2" />
-            <Button variant="outline-info">Search</Button>
+            <Link to={`/editnew`}><Button variant="outline-info">New</Button></Link>
           </Form>
     </Nav>
   </Navbar.Collapse>
@@ -240,3 +250,5 @@ myAds = () => {
     );
   }
 }
+
+Adverts.contextType = UserContext;

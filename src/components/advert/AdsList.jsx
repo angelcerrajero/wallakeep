@@ -26,7 +26,7 @@ render() {
                         <Card.Text>{ad.description}</Card.Text>
                         <Card.Text>{ad.price}€</Card.Text>
                         <Button variant="outline-primary" >I want to: {ad.type}</Button>
-                        <Card.Text></Card.Text>
+                        <Link to={`/editnew/${ad._id}`}><Card.Text><Button variant="outline-primary">EDIT</Button></Card.Text></Link>
                         <ButtonToolbar>
                         {
                             ad.tags.map(tag => (

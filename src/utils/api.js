@@ -56,6 +56,7 @@ export const api = () => {
 
     findAdByID: (id) => {
         const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
+        console.log(endPoint)
         return axios.get(endPoint)
         .then(response => response.data.result)
       },

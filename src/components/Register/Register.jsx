@@ -2,6 +2,8 @@ import React from 'react';
 import '../../css/styles.css';
 import { Link } from "react-router-dom";
 import Tags from "./Tags";
+import UserContext from '../../context/user'
+import Register from '../Register/Register'
 import {setUser, getUser} from './../../utils/storage';
 
 
@@ -22,9 +24,22 @@ export default class Login extends React.Component {
         
     }
 
+    updateFilterFromStorage () {
+      const user = getUser();
+      if (user !== null) {
+        this.context.updateUser(user);
+      }
+      return user;
+    }
+
+
+
   componentWillMount(){
     console.log('compruebo user antes de montar componente registro');
     const user = localStorage.getItem('userData');
+    const userFromContext = this.context.user;
+    console.log('usuario de contexto es:', userFromContext);
+    console.log('usuario de localstorage es:', user);
     console.log(user, this.props);
     if(user !== null){
       this.props.history.push("/advert");
@@ -50,7 +65,12 @@ export default class Login extends React.Component {
     }
     
     setUser(this.state.user);
+    this.context.updateUser(this.state.user);
+    
     this.props.history.push("/advert");
+    
+    
+    
 
   };
 
@@ -67,8 +87,10 @@ export default class Login extends React.Component {
 
 
   render(){
-    return(
+    const { user } = this.state;
 
+
+    return(
       <React.Fragment>
       <div className="formContainer">
         <form className="formHome" onSubmit = {this.onSubmit}>
@@ -103,3 +125,5 @@ export default class Login extends React.Component {
     
 
 }
+
+Register.contextType = UserContext;
