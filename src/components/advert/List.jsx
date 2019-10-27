@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import '../../css/styles.css';
 import UserContext from '../../context/user';
 import { number } from "prop-types";
+import {getUser} from '../../utils/storage'
 // import '../../css/bulma.css';
 
 const { getAds, findAds, getTags, getTagsAds, getAdsbySearch } = api();
@@ -25,22 +26,37 @@ export default class Adverts extends React.Component {
     
   }
   
+  updateFilterFromStorage () {
+    const user = getUser();
+    if (user !== null) {
+      this.context.updateUser(user);
+    }
+    return user;
+  }
 
-  componentWillMount(){
-    console.log('hola que ta')
+
+  componentDidMount(){
+    
     const user = localStorage.getItem('userData');
-    const userFromContext = this.context.user;
-    console.log('usuario del contexto: ', userFromContext.name)
+    // // const userFromContext = this.context.user;
+    // // const user = this.updateFilterFromStorage() || this.context.user;
+    // // console.log('user: ', user)
+    
 
-    // if(user == null){
-    //   this.context.updateUser(user);
-    //   this.props.history.push("/register");
-    // }
+    // // if (Object.entries(user).length !== 0) {
+    // //   this.context.updateUser(user);
+    // //   this.props.history.push("/register");
+    // // }
 
-    if(Object.entries(userFromContext).length === 0){
+    // // if(Object.entries(userFromContext).length === 0){
+    // //   this.props.history.push("/register");
+    // // }
+    
+    if(user == null){
+      this.context.updateUser(user);
       this.props.history.push("/register");
     }
-    
+
     this.myTags();
     this.myAds();
   }
@@ -67,7 +83,10 @@ resetAds = () => {
 myAds = () => {
 
       const user = JSON.parse(localStorage.getItem('userData'));  
-      console.log(user.tags)
+      if(user == null){
+        this.context.updateUser(user);
+        this.props.history.push("/register");
+      }
         
         getTagsAds(user.tags).then(ad =>
           this.setState({
@@ -121,8 +140,7 @@ myAds = () => {
 
     const { ads } = this.state;
     const { tags, loading } = this.state;
-        
-        
+
 
     if(loading){
         
@@ -164,7 +182,7 @@ myAds = () => {
   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
   <Navbar.Collapse id="responsive-navbar-nav">
     <Nav className="mr-auto">
-      
+
     </Nav>
     <Nav>
     <Form inline>

@@ -3,22 +3,29 @@ import api from "../../utils/api";
 import '../../css/bulma.css';
 import '../../css/styles.css';
 import { Link } from "react-router-dom";
+import Tags from "../Register/Tags";
 import { Nav, Navbar, Button, ButtonToolbar, Form, FormControl  } from 'react-bootstrap';
 
 
-const { findAdByID } = api();
+const { findAdByID, editAdvert, newAdvert } = api();
 
 export default class Editnew extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      ad: "",
-      tags:[],
-      price:"",
-      type:"",
+        advert: {
+            name: "",
+            description: "",
+            type: "",
+            price: "",
+            tags: [],
+            photo: "",
+            edit: false,
+        },
     }
-    console.log(this.props)
-    console.log(this.state)
+ 
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
   }
 
   componentWillMount(){
@@ -31,7 +38,8 @@ export default class Editnew extends React.Component {
     console.log('adId es:', adId)
 
     if(adId === undefined){
-        console.log('adId es undefined, no hago setState')
+        console.log('adId es undefined, no hago setState y cargo el form con datos vacios')
+
     }else{
         console.log('setState con la info del articulo')
         this.findByID(adId);
@@ -48,17 +56,91 @@ export default class Editnew extends React.Component {
   findByID = (adId) =>{
     findAdByID(adId).then(ad => 
       this.setState({
-        ad
-
+        advert: {
+            adId: ad._id,
+            name: ad.name,
+            type: ad.type,
+            description: ad.description,
+            price: ad.price,
+            tags: ad.tags,
+            photo: ad.photo,
+            edit: true,
+        },
      })
     )
+  }
+
+  onInputChange(event) {
+    const { name, value } = event.target;
+    
+    this.setState({
+        advert:{
+            ...this.state.advert,
+            [name]: value
+
+        }
+    })
+    // this.setState({
+    //   advert: {
+    //     ...this.state.advert,
+    //     [name]: value
+    //   }
+    // });
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+    console.log(this.state.advert)
+    console.log(typeof this.state.advert.type)
+
+    if(this.state.advert.type === "true"){
+        console.log('paso por true')
+        this.setState({
+            advert:{
+                type: true,
+            }
+        });
+        console.log(typeof this.state.advert.type)
+    }else if(this.state.advert.type === "false"){
+        console.log('paso por false')
+        this.setState({
+            advert:{
+                type: false,
+            }
+        });
+    }
+    if (this.state.advert.edit === true) {
+      return editAdvert(this.state.advert.adId, this.state.advert)
+        .then((res) => {
+          alert('Advert have been updated')
+        })
+
+    }
+    
+    newAdvert(this.state.advert).then(res => {
+      alert('Advert have been created');
+      this.setState({   //Una vez creamos el anuncio dejamos el formulario en blanco
+        advert: {
+          name: '',
+          description: '',
+          tags: [],
+          price: '',
+          type: '',
+          photo: '',
+          edit: false
+        },
+      })
+    });
   }
   
   
 
   render(){
-    const { ad } = this.state;
-      console.log(this.state)
+    const { advert } = this.state;
+    
+
+     
+
     return(
       <React.Fragment>
          <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -88,23 +170,60 @@ export default class Editnew extends React.Component {
 </Navbar>
         
       {
-        ad
+        advert
         &&
+        
         <div className="formContainer">
-        <form className="formHome" onSubmit = {this.onSubmit}>
+        <form className="formHome"  onSubmit = {this.onSubmit}>
           <div className="field">
             <label className="label is-size-6"></label>
             <div className="control">
-              <input className="input" type="text" placeholder="Name" name="name" onChange={this.onInputChange}/>
+                Ad Name
+              <input className="input" type="text" value={advert.adName}  name="name" onChange={this.onInputChange}/>
             </div>
           </div>
 
           <div className="field">
             <label className="label"></label>
             <div className="control">
-              <input className="input" type="text" placeholder="Surnname" name="surname" onChange={this.onInputChange} />
+                Description
+              <input className="input" type="text" placeholder={advert.adDescription}  name="description" onChange={this.onInputChange} />
             </div>
           </div>
+
+          <div className="field">
+            <label className="label"></label>
+            <div className="control">
+                Price €:
+              <input className="input" type="number" placeholder={advert.adPrice} name="price" onChange={this.onInputChange} />
+            </div>
+          </div>
+
+          <div className="field">
+            <label className="label"></label>
+            <div className="control">
+                Buy or  Sell:
+                <br></br>
+                <select className="select" name="type" placeholder={advert.adType} onChange={this.onInputChange}>
+                            <option value="false">buy</option>
+                            <option value="true">sell</option>
+                          </select>
+            </div>
+          </div>
+
+            Tags:
+          <Tags tagHandle={this.onInputChange} />
+
+          <div className="field">
+            <label className="label"></label>
+            <div className="control">
+            Photo url:
+            <input className="input" type="text" placeholder={advert.adPhoto} name="photo" onChange={this.onInputChange}/>
+                <div class="column is-6-desktop"><img src={`http://localhost:3001/${advert.adPhoto}`} alt=""/></div>
+            </div>
+          </div>
+
+          
         
         <div className="field is-grouped">
             <div className="control">
@@ -115,6 +234,8 @@ export default class Editnew extends React.Component {
           
           </form>
         </div>
+
+        
 
 
 

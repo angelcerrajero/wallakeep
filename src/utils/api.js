@@ -70,6 +70,26 @@ export const api = () => {
 
     },
 
+    editAdvert: (id, advert) => {
+			const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
+			return axios({
+          method: 'put',
+          url: endPoint,
+          data: advert 
+        }).then(res => res)
+    },
+    
+    newAdvert: (advert) => {
+      const endPoint = `http://localhost:3001/apiv1/anuncios`;
+      console.log(advert)
+			return axios({
+				method: 'post',
+				url: endPoint,
+        data: advert
+        
+      }).then(res => res.data)
+    }
+
 
   }
 

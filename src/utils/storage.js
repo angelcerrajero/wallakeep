@@ -4,5 +4,5 @@ export const setUser = user =>{
 
 export const getUser = () => {
     const user = localStorage.getItem('userData');
-    return JSON.parse('userData');
+    return JSON.parse(user);
 }

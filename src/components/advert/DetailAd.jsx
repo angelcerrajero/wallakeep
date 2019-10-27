@@ -20,11 +20,17 @@ export default class DetailAd extends React.Component {
   }
 
   componentWillMount(){
-    const userFromContext = this.context.user;
-    console.log('usuario del contexto es: ', userFromContext);
-    if(Object.entries(userFromContext).length === 0){
+    const user = localStorage.getItem('userData');
+    if(user == null){
+      this.context.updateUser(user);
       this.props.history.push("/register");
     }
+
+    // const userFromContext = this.context.user;
+    // console.log('usuario del contexto es: ', userFromContext);
+    // if(Object.entries(userFromContext).length === 0){
+    //   this.props.history.push("/register");
+    // }
 
   }
   

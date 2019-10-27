@@ -19,28 +19,42 @@ export default class Login extends React.Component {
             isRegister: false,
           }
         };
-
+        this.onInputChange = this.onInputChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         
         
     }
 
     updateFilterFromStorage () {
       const user = getUser();
+      console.log('el usuario del getUser es: ', user);
       if (user !== null) {
         this.context.updateUser(user);
+        console.log('paso')
       }
       return user;
     }
 
 
 
-  componentWillMount(){
+  componentDidMount(){
+    // console.log('compruebo user antes de montar componente registro');
+    // const user =  this.updateFilterFromStorage();
+    // console.log(user);
+    // // const userFromContext = this.context.user;
+    // // console.log('usuario de contexto es:', userFromContext);
+    // // console.log('usuario de localstorage es:', user);
+    // // console.log(user, this.props);
+    // if (Object.entries(user).length !== 0) {
+    //   this.props.history.push("/advert");
+    // }
+
     console.log('compruebo user antes de montar componente registro');
     const user = localStorage.getItem('userData');
     const userFromContext = this.context.user;
     console.log('usuario de contexto es:', userFromContext);
     console.log('usuario de localstorage es:', user);
-    console.log(user, this.props);
+    console.log(user, userFromContext);
     if(user !== null){
       this.props.history.push("/advert");
     }
@@ -64,31 +78,31 @@ export default class Login extends React.Component {
       return false;
     }
     
-    setUser(this.state.user);
     this.context.updateUser(this.state.user);
-    
+    console.log('paso asdfasdf')
     this.props.history.push("/advert");
+    setUser(this.state.user);
     
-    
-    
-
+    return true;
   };
 
   onInputChange = (event) => {
     const {name, value} = event.target;
-    this.setState(({ user }) => ({
-      user: {
-        ...user,
+    this.setState({
+      advert: {
+        ...this.state.advert,
         [name]: value
       }
-    }));
+    });
   };
 
 
 
   render(){
     const { user } = this.state;
-
+    if (Object.entries(this.context.user).length !== 0) {
+      return null;
+    }
 
     return(
       <React.Fragment>

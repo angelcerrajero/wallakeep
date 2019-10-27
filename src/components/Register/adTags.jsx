@@ -50,7 +50,7 @@ export default class Tags extends React.Component {
             
             <Form.Group controlId="tagSelect">
                 
-                <Form.Control as="select" name="tags" size="" autoFocus={true} required="required" onChange={this.props.tagHandle}>
+                <Form.Control as="select" name="adTags" size="" autoFocus={true} required="required" onChange={this.props.tagHandle}>
                     <option className="field" value="" selected disabled>Choose your Tag</option>
             {
                 tags.map(element =>(
