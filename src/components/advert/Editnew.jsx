@@ -16,7 +16,7 @@ export default class Editnew extends React.Component {
         advert: {
             name: "",
             description: "",
-            type: "",
+            venta: "",
             price: "",
             tags: [],
             photo: "",
@@ -93,22 +93,22 @@ export default class Editnew extends React.Component {
     console.log(this.state.advert)
     console.log(typeof this.state.advert.type)
 
-    if(this.state.advert.type === "true"){
-        console.log('paso por true')
-        this.setState({
-            advert:{
-                type: true,
-            }
-        });
-        console.log(typeof this.state.advert.type)
-    }else if(this.state.advert.type === "false"){
-        console.log('paso por false')
-        this.setState({
-            advert:{
-                type: false,
-            }
-        });
-    }
+    // if(this.state.advert.type === "true"){
+    //     console.log('paso por true')
+    //     this.setState({
+    //         advert:{
+    //             type: true,
+    //         }
+    //     });
+    //     console.log(typeof this.state.advert.type)
+    // }else if(this.state.advert.type === "false"){
+    //     console.log('paso por false')
+    //     this.setState({
+    //         advert:{
+    //             type: false,
+    //         }
+    //     });
+    // }
     if (this.state.advert.edit === true) {
       return editAdvert(this.state.advert.adId, this.state.advert)
         .then((res) => {
@@ -205,8 +205,8 @@ export default class Editnew extends React.Component {
                 Buy or  Sell:
                 <br></br>
                 <select className="select" name="type" placeholder={advert.adType} onChange={this.onInputChange}>
-                            <option value="false">buy</option>
-                            <option value="true">sell</option>
+                            <option value="buy">buy</option>
+                            <option value="sell">sell</option>
                           </select>
             </div>
           </div>

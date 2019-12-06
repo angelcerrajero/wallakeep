@@ -89,8 +89,8 @@ export default class Login extends React.Component {
   onInputChange = (event) => {
     const {name, value} = event.target;
     this.setState({
-      advert: {
-        ...this.state.advert,
+      user: {
+        ...this.state.user,
         [name]: value
       }
     });

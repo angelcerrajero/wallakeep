@@ -71,7 +71,8 @@ export const api = () => {
     },
 
     editAdvert: (id, advert) => {
-			const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
+      const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
+      
 			return axios({
           method: 'put',
           url: endPoint,
@@ -81,6 +82,11 @@ export const api = () => {
     
     newAdvert: (advert) => {
       const endPoint = `http://localhost:3001/apiv1/anuncios`;
+      // if(advert.venta === "true"){
+      //   advert.venta = true;
+      // }else{
+      //   advert.venta = false;
+      // }
       console.log(advert)
 			return axios({
 				method: 'post',
